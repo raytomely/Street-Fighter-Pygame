@@ -1,0 +1,256 @@
+SFR Type A Beta Faq:
+====================
+Date:  2/25/98
+
+Most Recent Additions:
+----------------------
+2/25/98 - HOLY CRAP!! a lot of things.  C/H/B frames, Options Menu, Tweaked Collision, Mappable Controls, too much to list here.  See fer yerselves (=
+1/20/98 - Add large portraits for character select screen.
+
+Boring Words From Your Programming host; Fenix:
+-----------------------------------------------
+
+	This faq is designed for those of you who want a head start on SFR type A editing.  In case you didn't know, there will be 2 different forms of the SFR engine.  The first (which this faq will cover) is tentatively called "Type A".  Type A is being developed to 'bridge the gap' between 1st and 2nd generation SFiBM.  In the end, Type A will support both SFR characters, and SFiBM characters.  Allowing them to both function in an environment similar to the older SFiBM engine only with slight upgrades and modifications to make it possible for game creators to accomplish things that Lim198 cannot do but without abandoning the old character formats.  You may ask why would I waste my time making a semi-improved rehashing of the old engine, instead of just making something all new?  Well, 2 main reasons, first being since I joined the SFR team, I've wanted to prove myself more powerful than the original developer of SFiBM; Lim.  So I'll do so by cloning and 1-uping his engine (=.  Secondly, if it's one thing being a video game developer has taught me, it's that nothing as complicated as game development is easy to learn.  So by doing this 'gap bridging' engine, I hope to make the 'jump' from SFiBM to SFR a lil bit more comfortable.  SFR Type B, whose details are still very much in discussion, will be an 'AFG' (All fighting game) engine.  It will be SFR character only, but I hope to incorporate any and all gameplay elements from 'A'll (currently existing) 'F'ighting 'G'ames.  And for those of you who are pessimists (like me) I plan to continue the SFR crusade until my untimely death, or the untimely death of 2D fighting games. . .  but enough talk, on with the show!. . . I mean faq.
+
+Understanding this FAQ:
+-----------------------
+
+	Because of my rather convoluted history and background, I am prone to speak in an indecipherable manner by use of 'big words' and 'net slang' in combination.  For this and my poor spelling skills, I apologize, and please. . . e-mail me if you need clarification of anything.
+
+Editing SFR characters:
+-----------------------
+
+	As of this writing, the differences between editing SFR characters and SFiBM characters is fairly miniscule.  This will of course change as time goes on, but for now.  This is the standard info ya need.  I'd suggest having a bit o knowledge with editing SFiBM characters before you begin.    Either way:
+
+.IDE and .RE Files:
+	Identical to the SFiBM .IDE file, use PCX2IDE, or my SF-EDIT to create/edit them.
+
+.SEQ files:
+	Please read the seqfaq.doc available on the SFiBM website to find out how to edit/create .SEQ files.
+
+.CMD files:
+	These files replace the old SFiBM .KEY file.  It holds the information for special moves, supers, and throws.  I'll break down each section, and then give some examples:
+
+First Section: Generic stuff
+
+Ryu
+50
+
+
+'Ryu' = this is the characters name, it is what will be displayed whenever they're name needs to be present.
+'50' = this signifies 'close' range.  Meaning, if 'Ryu' is within 50 pixels of his opponent, he can throw them, or use his 'close' attacks.
+
+Second Section: Special moves
+
+
+=special=
+3fd     45   N  0  (option)
+_end  -1 x 0
+
+
+'=special=' = This declares the special moves section, it doesn't have to be '=special=', it could be 'poop' or anything you can imagine that doesn't contain a space.
+
+'3fd' = This is how you execute the move.  Possible values are as follows:
+
+The eight basic directions:
+(when facing right)
+ L   u   l
+  \  |  /
+   \ | /
+b----n----f
+   / | \  
+  /  |  \
+ S   d   s
+
+u = up
+b = back
+d = down
+f = forward
+L = backwards leap (up-back)
+l = forwards leap (up-forward)
+S = backwards sneak (down-back)
+s = forwards sneak (down-forward)
+n = neutral (no direction)
+NOTE:  By using a capital letter for f,b,u, or d, will denote a charge rather than a press (for Guile/Deejay)
+
+The attack buttons:
+1 = jab
+2 = strong
+3 = fierce
+4 = short
+5 = forward
+6 = roundhouse
+w = both weak attacks (jab + short)
+m = both mid attacks (strong + forward)
+h = both heavy attacks (fierce + rhouse)
+
+NOTE:  the motions MUST be declared backwards, so 'down, forward + fierce punch' becomes '3fd'
+
+'45' = this is which sequence within the .SEQ file is executed when this motion is done.  In this example, when down, forward + fierce punch is executed, sequence 45 starts.
+
+'N' = this is the move 'type'.  It defines special attributes of the move.  the possible values are:
+
+N = a normal special move, executed on the ground.
+A = an air special move, executed in the air.
+C = a chain special move, executed on the ground, and can be cancelled by chain specials (see below).  (for Fei Long/Karin)
+
+'0' = the fourth value changes dependant upon what 'type' (see above) of move it is.  The values by 'type' are:
+
+N = Means nothing, should be declared as '0'
+A = Either a 1 or 0. 0 means when the special move is executed, it will follow the flight path of the jump, like Ken/Ryu's air hurricane kick.  1 means when the special move is executed it will 'hang' in the air, like Akuma's SFA1 air fireball.
+C = How many different cspecials this can cancel to.  1 = 1 cspecial, 2 = 2 cspecials, 3 = 3 cspecials.
+
+'(option)' = These values may or may not exist.  As of right now, you only need to use this if you're declaring a chainable special move.  An example of Fei Long's =special= section:
+
+=special=
+3fd    46   C   3  0 1 2
+_end  -1 x 0
+
+Which means:  down, forward + 3, starts sequence 46, which is a chainable special move.  It can be cancelled by 3 different cspecials, which are cspecials 0 1 and 2.  Got it?  You'll understand better when I get to the '=cspecial=' section.
+
+'_end  -1 x 0' = this terminates the special move section.
+
+Third Section:  Chain special moves:
+
+=cspecial=
+3bd    47   N 0
+_end  -1 x 0
+
+The cspecial section is identical to the '=special=' section.  Exact same declarations/definitions, same format.  However, there can not be any 'A' type cspecials.  The main difference?  cspecials cannot be executed the same way specials are.  They can only be executed after a 'C' type special.  The numbers in the '(option)' section of any special move refers to which cspecials can follow it.  Since 0 is the logical first number, the first cspecial entry is 0, not 1.
+NOTE:  Unless you plan on making Fei-long/Karin/Rolento/Andy Bogard type chain special moves, don't bother with this section, just put the =cspecial= tag, and then the _end -1 x 0 on the line below it.
+
+Fourth Section:  Super moves:
+
+=super=
+3fdfd     48    N    3   (option)
+_end  -1 x 0
+
+The super section is almost identical to the '=special=' section.  Except for 2 main differences:
+
+The only possible types are:
+A = air, a super that starts in the air.
+N = normal, a super that starts on the ground.
+M = morph, a super that causes the character to 'morph'
+There can be no 'C' type supers.
+
+Morphing Supers:  When you define a super move as a morph, inside the '(option)' portion, you place the ide, seq, and cmd filenames of the character you want it to morph to.
+
+'3' = unlike the =special= section, in which this value changed by type, this value always refers to how many levels of super the move requires.  1 = level 1, 2 = level 2, 3 = level 3.  
+
+Fifth Section:  Throws:
+
+41   35 55 84 1 ryu-toss.voc
+255   0  0  0 0 _no_voice
+
+This section is identical to how it was in the SFiBM .KEY file.  Please read an SFiBM faq on how to edit/understand it.
+
+.ID files:
+	This file is used to 'identify' a character, thus the name .ID.  Here is an example:
+
+Ryu
+1
+ryu.26 ryubig.150 ryu.ide ryu.seq ryu.cmd ryuback.520 ryutune.mid
+opponent1.id opponent2.id opponent3.id opponent4.id opponent6.id ending
+
+
+'Ryu' = The characters name.
+
+'1' = Either a 1 or 0.  Tells the game which file system the character uses.  If 1 will use the SFR system, if 0 it will use the SFiBM system.
+
+'ryu.26' = The portrait or smaller picture of the character to be used on the char select screen and during the fight.  It can be any image created using PCX2RAW or PCX2SF2
+
+'ryubig.150' = The filename of the LARGE portrait to be displayed behind the character on the character select screen.  It can be any image created using PCX2RAW or PCX2SF2.
+
+'ryu.ide' = what .IDE or .SPR file the char uses.
+
+'ryu.seq' = what .SEQ file the character uses.
+
+'ryu.cmd' = what .KEY or .CMD file the character uses.
+
+'ryuback.520' = what background file the character uses for his/her stage.  It can back any image created by 
+PCX2RAW or PCX2SF2.
+
+'ryutune.mid' = what MIDI background music the character uses.
+
+'opponent1.id - opponent6.id' = the .ID filenames of the characters this char fights and in what order.  These characters do not necessarily have to be selectable.
+
+'ending' = tells the game that there are no other opponents.
+
+ALL characters, wether they be SFiBM or SFR must have an .ID file to work in the engine.
+
+Editing the SFR.CFG:
+--------------------
+
+	The SFR.CFG file is a basic system file, which contains vital information for the engine.  Anyone with a small amount of skill using 'edit.com' can handle editing it.  Here's a run down of the information it contains, and what it reflects.  The file looks like this:
+
+titlepic.320
+titlesong.mid
+palette.pal
+smfont.fnt
+bgfont.fnt
+config.cfg
+
+'titlepic.320' is the filename of the image to be displayed as the Title Screen.  It can be any image file of any size that was created using PCX2RAW or PCX2SF2.  
+
+'titlesong.mid' is the MIDI sound file to be played at the title screen.
+
+'palette.pal' is the filename of the palette file for the game to use.  Unfortunately only my palette ripping utility can create an SFR compatible palette.  I have provided SFR.PAL which is a compliant pal file.  I will be releasing my palette ripping utility in the near future.
+
+'smfont.fnt' is the filename of the font file used for small situations.  Unfortunately only my font creating utility can create an SFR compatible font.  I have provided SFR.FNT which is a compliant font file.  I will release my font maker in the near future.
+
+'bgfont.fnt' is the filename of the font file used for BIG situations.  Unfortunately only my font creating utility can create an SFR compatible font.  I have provided SFR.FNT which is a compliant font file.  I will be releasing my font maker sometime soon.
+
+'config.cfg' is the filename of the secondary configuration file to be used.
+
+All of these filenames can be changed so that the game uses whatever custom configurations you can imagine, but the SFR.CFG must ALWAYS be named SFR.CFG.
+
+Editing the Secondary Configuration File:
+-----------------------------------------
+
+	The secondary configuration file contains the information about the character select screen.  The file looks like this:
+
+bgimage.320
+cselect.mid
+2 2
+char1.id
+char2.id
+char3.id
+char4.id
+end
+
+'bgimage.320' is the image displayed in the background of the character select screen.  It can be any image created using PCX2SF2 or PCX2RAW.
+
+'cselect.mid' is the name of the background midi to be played on the char select screen.
+
+'2 2' these 2 numbers reflect the dimensions of the character select portrait rectange.  (Sorry other shapes not supported yet.)  The first number is how many columns, and second is how many rows.  In this example it will display the portraits in a 2 x 2 square.
+
+'char1.id - char4.id'  is the identification file of a selectable character.  If a character is to be used in the game, it must be listed here.  The characters order here will determine how they appear based on the dimensions stated above them.  Altho I'm not it will crash, I doubt it would be wise for you to include more or less character .id filenames that the dimensions will allow.  The game can currently support up to 40 selectable characters,  which will change with time.
+
+'end' this comes after the last .id file.  It is only used for that.
+
+Contacting Me/Us:
+-----------------
+The Official SFR Homepage:
+http://www.ameritech.net/users/trufenix/index.html - Come here for all news and information regarding the SFR Project.
+
+The Official SFR Homepage (Mirror):
+http://www.geocities.com/SiliconValley/Platform/5313/ - Come here for all news and information regarding the SFR Project, and Geocities pop-up.
+
+The Team Members:
+Fenix - Project lead/Lead Progammer:  Trufenix@aol.com 
+Jason La - Second in command:  Akira23@hotmail.com
+Esaelon - Programmer:  Esaelon@aol.com
+RyogaMKN - Beta Tester/Character developer:  BruceLeeMK@aol.com
+Error1 - Beta Tester/Bug Reporter:  Error1@juno.com
+Tom - Beta Tester/Webmaster:  Tomlee11@hotmail.com
+Malenko - Background Artist and Snagger:  Email Unknown
+Death Adder - Ideas and Support:  Death-adder@juno.com
+
+The Official SFiBM Homepage:
+http://members.xoom.com/sfibmteam/ - For all news regarding SFiBM in general.
+
+Credits:
+--------
+	I, the Fenix am founder of PROJECT: SFR.  I am a proud member of the SFiBM team.  The inspiration to start it, and keep it going this far goes to them;  Eggyolk, RyogaMKN, Maximoff, Malenko (He will be missed), Error1, Death Adder, Nycxwulf, Chaos, and Speedy.  I also thank Stan Warman, Jenn Dolari, as they're faqs/knowledge have been instrumental in this project.  Lastly, my personal band of cohorts in battle, Fenix (me), Jason La, Esaelon, RyogaMKN, Tom Lee, and Error1.  To everyone who's ever contributed to this project, wether it be in person, or e-mail, or whatever. . . I thank you, and acknowledge you all as friends.  Except for 1 person.. . you know who you are.  
+
+FE-FE-FEEEEEEEEEEEEEEEEEEEEENIX!!!!!!
